@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<section style="background-image: url('https://picsum.photos/1920/1080/?blur'); margin: 0; padding: 0;">
+    <div class="container min-vh-100 d-flex justify-content-center mt-5">
+        <div class="bg-transparent" style="width: 50%;">
+            <form method="post" class="shadow-lg p-4 rounded text-white">
+
+                {% csrf_token %}
+                <h3 class="text-center font-monospace fw-bold">Register</h3>
+                
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}{% if message.tags == 'error' %} style="color: red;"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            
+                    
+                <!-- Username field -->
+                <div class="mb-3 form-group">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter username"
+                        name="username" />
+                </div>
+
+                <!-- Password field -->
+                <div class="mb-2 form-group">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter password"
+                        name="password" />
+                    <input type="checkbox" onclick="myFunction()" class="m-2">Show Password
+                </div>
+
+                <!-- Confirm password field -->
+                <div class="mb-3 form-group">
+                    <label for="confirm_password" class="form-label">Confirm Password:</label>
+                    <input type="password" class="form-control" id="confirm_password" placeholder="Confirm password"
+                        name="confirm_password" />
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Submit</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

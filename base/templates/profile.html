@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row pt-5 shadow-lg w-100 ">
+        <!-- Profile Sidebar -->
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <img src="https://images.unsplash.com/photo-1561154464-82e9adf32764?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
+                    class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">welcome..
+                        {% if user.is_authenticated %}
+                        {{ user.username }}
+                        {% endif %}
+                    </h5>
+                    <button type="button" class="btn btn-danger   " onclick="profileFunctions()">
+                        Click Here to complete your profile...
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Add More Details -->
+        <div class="col-md-8">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+                <p class="m-0">
+                    <a href="{% url 'index' %}" class="btn btn-link">Return to Home</a>
+                    
+                </p>
+            </ul>
+        {% endif %}
+        
+        
+            <form method="post" class="row g-3 needs-validation" validate id="user_profile">
+                {% csrf_token %}
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="dob" class="form-label">DOB</label>
+                    <input type="date" class="form-control" id="dob" name="dob" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="age" class="form-label">Age</label>
+                    <input type="number" class="form-control" id="age" name="age" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select class="form-select" id="gender" name="gender" required>
+                        <option value="">Select</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="col-md-12">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea class="form-control" id="address" name="address" required></textarea>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="department" class="form-label">Department</label>
+                    <select class="form-select" id="department" name="department"  onchange="fetchCourses()" required>
+                        <option value="">Select</option>
+
+                        {% for d in departments %}
+                        <option value="{{d.id}}">{{d.name}}</option>
+
+                        {% endfor %}
+ 
+                        <!-- Add more department options as needed -->
+                    </select>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="course" class="form-label">Course</label>
+                    <select class="form-select" id="course" name="course" required>
+                        <option value="">Select</option>
+                        <!-- Populate the course options dynamically based on the selected department -->
+                    </select>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="purpose" class="form-label">Purpose</label>
+                    <select class="form-select" id="purpose" name="purpose" required>
+                        <option value="">Select</option>
+                        
+                        {% for p in purpose %}
+                            <option value="{{p.id}}">{{p.name}}</option>
+                        {% endfor %}
+                            
+                        <!-- Add more purpose options as needed -->
+                    </select>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Materials Provide</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="material1" name="materials"
+                            value="debit_notebook">
+                        <label class="form-check-label" for="material1">Debit Note Book</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="material2" name="materials" value="pen">
+                        <label class="form-check-label" for="material2">Pen</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="material3" name="materials"
+                            value="exam_papers">
+                        <label class="form-check-label" for="material3">Exam Papers</label>
+                    </div>
+                    <!-- Add more materials as needed -->
+                </div>
+               
+                <div class="col-12 ">
+                  
+                
+                    <div class="m-0 p-0">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    <p class="m-0 ">
+                        <a href="{% url 'index' %}" class="btn btn-link">Return to Home</a>
+                    </p>
+                    </div>
+                </div>
+               
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#user_profile").hide();
+        $("#try_again_btn").on("click", profileFunctions)
+    });
+    function profileFunctions() {
+        $("#user_profile").show();
+    }
+
+    function fetchCourses() {
+        console.log("Loading courses");
+        var selectedDepartment = $("#department").val();
+        
+        $.ajax({
+            type: "GET",
+            url: "{% url 'get_courses' %}",  
+            data: { department_id: selectedDepartment }, 
+            dataType: "json",
+            success: function (response) {
+                var coursesSelect = $("#course");
+                coursesSelect.empty();  
+                
+                // Add the new course options based on the response
+                $.each(response, function (index, course) {
+                    coursesSelect.append(`<option value="${course.id}">${course.name}</option>`);
+                });
+            }
+        });
+    }
+
+    function submitForm(){
+
+    }
+</script>
+
+{% endblock content %}
